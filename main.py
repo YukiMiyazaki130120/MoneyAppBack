@@ -33,7 +33,7 @@ def get_account():
         cursor.close()
 
 # ルーティング定義
-@app.route('/send_money', methods=['GET'])
+@app.route('/RemittanceDest', methods=['GET'])
 def send_money():
     try:
         # カーソルを取得

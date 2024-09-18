@@ -25,3 +25,4 @@ INSERT INTO account_info (account_num, user_name, image_path,balance) VALUES
 
 -- データの確認
 SELECT * FROM account_info;
+
