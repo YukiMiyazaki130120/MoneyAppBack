@@ -13,7 +13,7 @@ conn = mysql.connector.connect(
 app = Flask(__name__, static_folder="static")
 
 # ルーティング定義
-@app.route('/', methods=['GET'])
+@app.route('/top', methods=['GET'])
 def get_account():
     try:
         # カーソルを取得
