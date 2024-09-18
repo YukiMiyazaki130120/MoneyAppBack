@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, session, request
 import mysql.connector
+from flask_cors import CORS
 
 # MySQLに接続
 conn = mysql.connector.connect(
@@ -11,6 +12,11 @@ conn = mysql.connector.connect(
 
 # Flaskのコンストラクタ
 app = Flask(__name__, static_folder="static")
+
+CORS(
+    app,
+    supports_credentials=True
+)
 
 # Sessionの暗号化キー
 app.secret_key = b'abcdefghijklmn'
