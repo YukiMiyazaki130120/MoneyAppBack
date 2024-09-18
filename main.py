@@ -33,15 +33,15 @@ def get_account():
         cursor.close()
 
 # ルーティング定義
-@app.route('/send_money', methods=['POST','GET'])
+@app.route('/send_money', methods=['GET'])
 def send_money():
     try:
         # カーソルを取得
         cursor = conn.cursor(dictionary=True)
         
         # 口座番号123456の情報を取得
-        cursor.execute("SELECT images, user_name FROM account_info ")
-        account = cursor.fetchone()
+        cursor.execute("SELECT account_num, image_path, user_name FROM account_info ")
+        account = cursor.fetchall()
         
         if account:
             return jsonify(account)
