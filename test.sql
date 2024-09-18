@@ -54,5 +54,4 @@ INSERT INTO claim_log (sender, destination, amount, msg, dateinfo, flag) VALUES
 
 -- データの確認
 SELECT * FROM account_info;
-SELECT * FROM remittance_log;
-SELECT * FROM claim_log;
+
