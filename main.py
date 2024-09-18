@@ -1,16 +1,21 @@
 from flask import Flask, jsonify
 import mysql.connector
+from flask_cors import CORS
 
 # MySQLに接続
 conn = mysql.connector.connect(
     host='127.0.0.1',
     user="root",
-    password="22426Free",
+    password="Kouki052315",
     database="appBank"  # appBankデータベースを使用
 )
 
 # Flaskのコンストラクタ
 app = Flask(__name__, static_folder="static")
+CORS(
+    app,
+    supports_credentials=True
+)
 
 # ルーティング定義
 @app.route('/top', methods=['GET'])
