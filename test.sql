@@ -53,7 +53,7 @@ INSERT INTO remittance_log (sender, destination, destination_name,amount, msg,da
 ('123456', '234567','菊地 花子',500.00, "こんにちは",'2024-09-18 14:30:00');
 
 INSERT INTO claim_log (sender, destination,destination_name, amount, msg, dateinfo,URL_link, flag) VALUES
-('345678', '456789','田中 武' 1500.00, "ありがとう", '2024-09-18 14:30:00','http://claim/123456',TRUE);
+('345678', '456789','田中 武', 1500.00, "ありがとう", '2024-09-18 14:30:00',"http://claim/123456",true);
 
 -- データの確認
 SELECT * FROM account_info;
