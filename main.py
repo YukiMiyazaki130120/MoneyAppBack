@@ -118,13 +118,13 @@ def step5_complete():
 
         # 送金ログを記録
         current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        cursor.execute("""INSERT INTO remittance_log (sender, destination, amount,  dateinfo)
-                        VALUES (%s, %s, %s, %s, %s, TRUE)""", 
-                        (sender_account, destination_account, amount, current_date))
+        cursor.execute("""INSERT INTO remittance_log (sender, destination,destination_name, amount,  dateinfo)
+                        VALUES (%s, %s, %s, %s, %s)""", 
+                        (sender_account, destination_account, destination_name ,amount, current_date))
 
         conn.commit()
 
-        return None
+        return "OK"
 
     except Exception as e:
         conn.rollback()

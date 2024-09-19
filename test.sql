@@ -19,6 +19,7 @@ CREATE TABLE remittance_log (
    id INT(10) NOT NULL AUTO_INCREMENT,
    sender VARCHAR(10000) NOT NULL,
    destination VARCHAR(100) NOT NULL,
+   destination_name VARCHAR(100) NOT NULL,
    amount DECIMAL(10, 2) NOT NULL,
    dateinfo DATETIME NOT NULL,
    PRIMARY KEY (id)
@@ -29,6 +30,7 @@ CREATE TABLE claim_log (
    id INT(10) NOT NULL  AUTO_INCREMENT,
    sender VARCHAR(10000) NOT NULL,
    destination VARCHAR(100) NOT NULL,
+   destination_name VARCHAR(100) NOT NULL,
    amount DECIMAL(10, 2) NOT NULL,
    msg VARCHAR(1000),
    dateinfo DATETIME NOT NULL,
@@ -45,11 +47,11 @@ INSERT INTO account_info (account_num, user_name, image_path,balance) VALUES
 ('567890', '和田 京子','human5.png', 3000.00),
 ('678901', '鈴木 太朗','human6.png', 20000.00);
 
-INSERT INTO remittance_log (sender, destination, amount, msg, dateinfo, flag) VALUES
-('123456', '234567', 500.00, "こんにちは", '2024-09-18 14:30:00', TRUE);
+INSERT INTO remittance_log (sender, destination, destination_name,amount, dateinfo) VALUES
+('123456', '234567','菊地 花子',500.00, "こんにちは", '2024-09-18 14:30:00');
 
-INSERT INTO claim_log (sender, destination, amount, msg, dateinfo, flag) VALUES
-('345678', '456789', 1500.00, "ありがとう", '2024-09-18 14:30:00', TRUE);
+INSERT INTO claim_log (sender, destination,destination_name, amount, msg, dateinfo, flag) VALUES
+('345678', '456789','田中 武' 1500.00, "ありがとう", '2024-09-18 14:30:00', TRUE);
 
 -- データの確認
 SELECT * FROM account_info;
