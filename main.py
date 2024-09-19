@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, session, request
 import mysql.connector
 from flask_cors import CORS
+from datetime import datetime
 
 # MySQLに接続
 conn = mysql.connector.connect(
@@ -16,7 +17,6 @@ CORS(
     app,
     supports_credentials=True
 )
-
 # Sessionの暗号化キー
 app.secret_key = b'abcdefghijklmn'
 
@@ -96,23 +96,44 @@ def send_account_info():
         cursor.close()
 
 
-# ルーティング定義
-@app.route('/Step5_complete', methods=['POST'])
+
+@app.route('/Step5_complete', methods=['POST'])  # GETからPOSTに変更
+
 def step5_complete():
     try:
+        data = request.json
+    
+        # データの取り出し
+        amount = data.get('amount')
+        destination_account = data.get('account_num')
+        destination_name = data.get('user_name')
+        
+        # 送金元の情報（セッションやトークンから取得する必要があります）
+        sender_account = "123456" 
+        
         # カーソルを取得
         cursor = conn.cursor(dictionary=True)
         
-        # 全ての口座情報を取得
-        cursor.execute("UPDATE account_info SET balance = balance + 金額 WHERE account_num = %s", ('送り先の口座番号',))
-        cursor.execute("UPDATE account_info SET balance = balance + 金額 WHERE account_num = %s", ('送り元の口座番号',))
+        # 送金先の残高を更新
+        cursor.execute("UPDATE account_info SET balance = balance + %s WHERE account_num = %s", (amount, destination_account))
+        
+        # 送金元の残高を更新（減額）
+        cursor.execute("UPDATE account_info SET balance = balance - %s WHERE account_num = %s", (amount, sender_account))
 
-        cursor.execute("""INSERT INTO remittance_log (sender,destination,amount,msg,dateinfo,flag)
-                        VALUES (送金元,送金先,金額,メッセージ,日付,TRUE)""")
+        # 送金ログを記録
+        current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute("""INSERT INTO remittance_log (sender, destination, amount,  dateinfo)
+                        VALUES (%s, %s, %s, %s, %s, TRUE)""", 
+                        (sender_account, destination_account, amount, current_date))
 
         conn.commit()
 
-        return '完了'
+        return None
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
     finally:
         cursor.close()
 
