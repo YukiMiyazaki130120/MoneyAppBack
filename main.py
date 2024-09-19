@@ -107,6 +107,7 @@ def step5_complete():
         amount = data.get('amount')
         destination_account = data.get('account_num')
         destination_name = data.get('user_name')
+        message = data.get('message')
         
         # 送金元の情報（セッションやトークンから取得する必要があります）
         sender_account = "123456" 
@@ -122,9 +123,9 @@ def step5_complete():
 
         # 送金ログを記録
         current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        cursor.execute("""INSERT INTO remittance_log (sender, destination,destination_name, amount,  dateinfo)
+        cursor.execute("""INSERT INTO remittance_log (sender, destination,destination_name, amount, msg,dateinfo)
                         VALUES (%s, %s, %s, %s, %s)""", 
-                        (sender_account, destination_account, destination_name ,amount, current_date))
+                        (sender_account, destination_account, destination_name ,amount,message,current_date))
 
         conn.commit()
 

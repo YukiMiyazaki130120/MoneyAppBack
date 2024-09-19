@@ -21,6 +21,7 @@ CREATE TABLE remittance_log (
    destination VARCHAR(100) NOT NULL,
    destination_name VARCHAR(100) NOT NULL,
    amount DECIMAL(10, 2) NOT NULL,
+   msg VARCHAR(1000),
    dateinfo DATETIME NOT NULL,
    PRIMARY KEY (id)
 )CHARACTER SET utf8mb4;
