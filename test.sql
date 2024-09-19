@@ -35,6 +35,7 @@ CREATE TABLE claim_log (
    amount DECIMAL(10, 2) NOT NULL,
    msg VARCHAR(1000),
    dateinfo DATETIME NOT NULL,
+   URL_link  VARCHAR(1000) NOT NULL,
    flag BOOLEAN NOT NULL,
    PRIMARY KEY (id)
 )CHARACTER SET utf8mb4;
@@ -51,8 +52,8 @@ INSERT INTO account_info (account_num, user_name, image_path,balance) VALUES
 INSERT INTO remittance_log (sender, destination, destination_name,amount, msg,dateinfo) VALUES
 ('123456', '234567','菊地 花子',500.00, "こんにちは",'2024-09-18 14:30:00');
 
-INSERT INTO claim_log (sender, destination,destination_name, amount, msg, dateinfo, flag) VALUES
-('345678', '456789','田中 武' 1500.00, "ありがとう", '2024-09-18 14:30:00', TRUE);
+INSERT INTO claim_log (sender, destination,destination_name, amount, msg, dateinfo,URL_link, flag) VALUES
+('345678', '456789','田中 武' 1500.00, "ありがとう", '2024-09-18 14:30:00','http://claim/123456',TRUE);
 
 -- データの確認
 SELECT * FROM account_info;
