@@ -97,7 +97,7 @@ def send_account_info():
 
 
 # ルーティング定義
-@app.route('/Step5_complete', methods=['GET'])
+@app.route('/Step5_complete', methods=['POST'])
 def step5_complete():
     try:
         # カーソルを取得
