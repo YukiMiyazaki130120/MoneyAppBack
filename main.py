@@ -2,6 +2,7 @@ from flask import Flask, jsonify, session, request
 import mysql.connector
 from flask_cors import CORS
 from datetime import datetime
+import random
 
 # MySQLに接続
 conn = mysql.connector.connect(
@@ -107,8 +108,8 @@ def step5_complete():
         destination_account = data.get('account_num')
         destination_name = data.get('user_name')
 
-        print(amount, destination_account)
-        
+        message = data.get('message')
+
         # 送金元の情報（セッションやトークンから取得する必要があります）
         sender_account = "123456" 
         
@@ -122,11 +123,11 @@ def step5_complete():
         cursor.execute("UPDATE account_info SET balance = balance - %s WHERE account_num = %s", (amount, sender_account))
 
         # 送金ログを記録
-        
-        # current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # cursor.execute("""INSERT INTO remittance_log (sender, destination, amount,  dateinfo)
-        #                 VALUES (%s, %s, %s, %s, %s, TRUE)""", 
-        #                 (sender_account, destination_account, amount, current_date))
+
+        current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute("""INSERT INTO remittance_log (sender, destination,destination_name, amount, msg,dateinfo)
+                        VALUES (%s, %s, %s, %s, %s, %s)""", 
+                        (sender_account, destination_account, destination_name ,amount,message,current_date))
 
         conn.commit()
 
@@ -138,6 +139,49 @@ def step5_complete():
 
     finally:
         cursor.close()
+
+@app.route('/Page3_2', methods=['POST'])  # GETからPOSTに変更
+
+def Page3_2():
+    try:
+        data = request.json
+    
+        # データの取り出し
+        amount = data.get('amount')
+        sender_account = data.get('account_num')
+        
+        destination_account = "123456"
+        destination_name = data.get('user_name')
+        message = data.get('message')
+        
+        # カーソルを取得
+        cursor = conn.cursor(dictionary=True)
+        
+        # 現在の日時を取得
+        current_date = datetime.now()
+        
+        # ランダムな3桁の数値を生成
+        random_number = random.randint(100, 999)
+        
+        # URL_linkを作成
+        URL_link = f"http://{current_date.strftime('%Y%m%d%H%M%S')}{amount}{random_number}"
+        
+        # 送金ログを記録
+        cursor.execute("""INSERT INTO claim_log (sender, destination, destination_name, amount, msg, dateinfo, URL_link, flag)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", 
+                        (sender_account, destination_account, destination_name, amount, message, current_date, URL_link, True))
+
+        conn.commit()
+
+        return jsonify(URL_link)
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+
 
 
 # プログラム起動
