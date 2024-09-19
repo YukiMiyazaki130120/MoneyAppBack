@@ -181,7 +181,32 @@ def Page3_2():
     finally:
         cursor.close()
 
+@app.route('/Page4', methods=['GET'])
+def get_remittance_logs():
+    try:
 
+        # カーソルを取得
+        cursor = conn.cursor(dictionary=True)
+
+        # 送金ログを取得
+        cursor.execute("SELECT * FROM remittance_log ORDER BY dateinfo DESC")
+        logs = cursor.fetchall()
+
+        # datetime オブジェクトを文字列に変換
+        for log in logs:
+            log['dateinfo'] = log['dateinfo'].strftime('%Y-%m-%d %H:%M:%S')
+
+        # JSON形式でレスポンスを返す
+        return jsonify({
+            "remittance_logs": logs
+        }), 200
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
 
 # プログラム起動
 if __name__ == "__main__":
