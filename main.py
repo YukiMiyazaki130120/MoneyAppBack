@@ -60,9 +60,11 @@ def send_money():
         cursor = conn.cursor(dictionary=True)
         
         # 全ての口座情報を取得
-        cursor.execute("SELECT account_num, image_path, user_name FROM account_info WHERE account_num NOT IN (%s)", (session.get("account"),))
+        cursor.execute("SELECT account_num, image_path, user_name FROM account_info WHERE account_num != '123456' ")
+        # cursor.execute("SELECT account_num, image_path, user_name FROM account_info WHERE account_num NOT IN (%s)", (session.get("account"),))
+
         accounts = cursor.fetchall()
-        
+        print(session.get("account"))
         if accounts:
             return jsonify(accounts)
         else:
@@ -94,7 +96,9 @@ def send_account_info():
         cursor.close()
 
 
+
 @app.route('/Step5_complete', methods=['POST'])  # GETからPOSTに変更
+
 def step5_complete():
     try:
         data = request.json
