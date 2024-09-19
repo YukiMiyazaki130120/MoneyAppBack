@@ -99,7 +99,6 @@ def send_account_info():
 
 
 @app.route('/Step5_complete', methods=['POST'])  # GETからPOSTに変更
-
 def step5_complete():
     try:
         data = request.json
@@ -108,8 +107,9 @@ def step5_complete():
         amount = data.get('amount')
         destination_account = data.get('account_num')
         destination_name = data.get('user_name')
+
         message = data.get('message')
-        
+
         # 送金元の情報（セッションやトークンから取得する必要があります）
         sender_account = "123456" 
         
@@ -123,6 +123,7 @@ def step5_complete():
         cursor.execute("UPDATE account_info SET balance = balance - %s WHERE account_num = %s", (amount, sender_account))
 
         # 送金ログを記録
+
         current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cursor.execute("""INSERT INTO remittance_log (sender, destination,destination_name, amount, msg,dateinfo)
                         VALUES (%s, %s, %s, %s, %s, %s)""", 
