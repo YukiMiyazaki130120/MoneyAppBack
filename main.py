@@ -8,7 +8,7 @@ import random
 conn = mysql.connector.connect(
     host='127.0.0.1',
     user="root",
-    password="Kouki052315",
+    password="#",
     database="appBank"  # appBankデータベースを使用
 )
 
